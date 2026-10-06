@@ -1,20 +1,31 @@
+# Dependencies
 node_modules/
+
+# Next.js / Build outputs
+.next/
 dist/
 build/
+out/
 
+# Python Virtual Environments
+venv/
+.venv/
+ENV/
+env/
+
+# Environment Files (Secrets)
 .env
 .env.local
-.env.*.local
-!.env.example
+.env.development.local
+.env.test.local
+.env.production.local
 
-# Admin-uploaded images: keep the directory, never the contents.
-uploads/*
-!uploads/.gitkeep
-
-npm-debug.log*
-yarn-error.log*
+# Operating System Files
 .DS_Store
 Thumbs.db
 
-venv/
-.venv/
+# Log files
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
