@@ -386,6 +386,25 @@ model SiteSettings {
   /// a caption) can be added without another migration.
   video       Json @default("{}")
 
+  /// { siteName?, logoUrl?, footerLogoUrl?, faviconUrl? }. Empty on rows that
+  /// predate the column; serializeSettings() fills the gaps from the defaults.
+  branding    Json @default("{}")
+
+  /// Page copy, each read and written whole. The defaults live in
+  /// src/config/siteSettingsDefaults.js.
+  /// { title, subtitle, storyHtml, missionStatement, visionStatement, heroImageUrl, stats[] }
+  aboutPage    Json @default("{}") @map("about_page")
+  /// { title, subtitle, introText, bannerImageUrl, servicesList[{ title, description, icon? }] }
+  servicesPage Json @default("{}") @map("services_page")
+  /// { inquiryHeadline, inquiryIntro, bannerImageUrl, address, workingHours,
+  /// mapEmbedUrl, inquiryEmail }. The last four defer to `contact` when blank.
+  contactPage  Json @default("{}") @map("contact_page")
+  /// { active, announcementText, ctaLabel, ctaLink }, the site-wide announcement bar.
+  banner       Json @default("{}")
+  /// { copyrightText, quickLinks[{ label, href }] }. The blurb and social links
+  /// predate this column and stay in `footerBlurb` and `socials`.
+  footer       Json @default("{}")
+
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 

@@ -9,6 +9,8 @@ const SORTS = {
   'price-desc': [{ priceFrom: 'desc' }],
   'duration-asc': [{ durationDays: 'asc' }],
   newest: [{ createdAt: 'desc' }],
+  'title-asc': [{ title: 'asc' }],
+  'title-desc': [{ title: 'desc' }],
 };
 
 /** The destination fields the tour pages actually render. */

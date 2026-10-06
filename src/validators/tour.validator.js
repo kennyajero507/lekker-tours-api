@@ -74,7 +74,9 @@ export const tourListQuery = paginationQuery.extend({
   q: z.string().trim().max(120).optional(),
   minPrice: z.coerce.number().min(0).optional(),
   maxPrice: z.coerce.number().min(0).optional(),
-  sort: z.enum(['recommended', 'price-asc', 'price-desc', 'duration-asc', 'newest']).default('recommended'),
+  sort: z
+    .enum(['recommended', 'price-asc', 'price-desc', 'duration-asc', 'newest', 'title-asc', 'title-desc'])
+    .default('recommended'),
 });
 
 export const adminTourListQuery = tourListQuery.extend({

@@ -1,7 +1,7 @@
 import { prisma } from '../config/db.js';
 import { sendData } from '../utils/respond.js';
 import { revalidate } from '../utils/revalidate.js';
-import { serialize } from '../utils/serialize.js';
+import { serializeSettings } from '../utils/serialize.js';
 import { SITE_SETTINGS_DEFAULTS } from '../config/siteSettingsDefaults.js';
 
 /**
@@ -20,7 +20,7 @@ export async function getSingletonSettings() {
 }
 
 export async function getSettings(req, res) {
-  sendData(res, serialize(await getSingletonSettings()));
+  sendData(res, serializeSettings(await getSingletonSettings()));
 }
 
 export async function updateSettings(req, res) {
@@ -40,5 +40,5 @@ export async function updateSettings(req, res) {
 
   const settings = await prisma.siteSettings.update({ where: { id: current.id }, data });
   await revalidate(['settings', 'home']);
-  sendData(res, serialize(settings));
+  sendData(res, serializeSettings(settings));
 }

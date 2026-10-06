@@ -12,6 +12,9 @@
  * every React `key`.
  */
 
+import { SITE_SETTINGS_DEFAULTS } from '../config/siteSettingsDefaults.js';
+import { sanitizeHtml } from './sanitizeHtml.js';
+
 /**
  * Prisma returns Decimal instances for numeric columns (priceFrom, rating,
  * budgetUSD). JSON.stringify would render those as objects, not numbers, so
@@ -115,7 +118,47 @@ export function serializeEnquiryEvent(row) {
   return withIds(row);
 }
 
-/** BlogPost, Testimonial, FAQ and SiteSettings need ids and nothing more. */
+/** Sections added after the table was first created. */
+const BACKFILLED_SECTIONS = [
+  'branding',
+  'hero',
+  'aboutPage',
+  'servicesPage',
+  'contactPage',
+  'banner',
+  'footer',
+];
+
+/** A list key that is missing or malformed falls back to its default list. */
+function ensureList(section, key, fallback) {
+  if (!Array.isArray(section[key])) section[key] = fallback;
+}
+
+/**
+ * Rows saved before these columns existed hold `{}` there, and a partial save
+ * can leave individual keys out. The web app reads every key, so the gaps are
+ * filled from the defaults here rather than in each consumer.
+ */
+export function serializeSettings(row) {
+  if (!row) return row;
+
+  const out = withIds(row);
+  for (const section of BACKFILLED_SECTIONS) {
+    out[section] = { ...SITE_SETTINGS_DEFAULTS[section], ...(row[section] ?? {}) };
+  }
+
+  // Sanitised on write already; repeated here so a row edited by hand in the
+  // database still cannot put script on the public About page.
+  out.aboutPage.storyHtml = sanitizeHtml(out.aboutPage.storyHtml);
+  ensureList(out.aboutPage, 'stats', []);
+  ensureList(out.hero, 'slides', SITE_SETTINGS_DEFAULTS.hero.slides);
+  ensureList(out.servicesPage, 'servicesList', SITE_SETTINGS_DEFAULTS.servicesPage.servicesList);
+  ensureList(out.footer, 'quickLinks', SITE_SETTINGS_DEFAULTS.footer.quickLinks);
+
+  return out;
+}
+
+/** BlogPost, Testimonial and FAQ need ids and nothing more. */
 export const serialize = withIds;
 
 /** Maps a serializer over a list. */

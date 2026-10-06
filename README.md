@@ -140,7 +140,7 @@ uploads/           # admin-uploaded images, served at /uploads
 | `testimonials` | Reviews shown in the homepage carousel. |
 | `faqs` | Grouped questions for the homepage accordion. |
 | `enquiries` | Both contact-form and booking-form submissions, with a `new → read → responded → archived` workflow. |
-| `site_settings` | Singleton (unique `key = 'primary'`) holding hero copy, values, contact block, socials, footer and default SEO. |
+| `site_settings` | Singleton (unique `key = 'primary'`) holding branding (site name, logos, favicon), About/Services/Contact page copy, the service cards, the announcement bar, footer links, hero copy and slides, values, contact block, socials, footer and default SEO. |
 | `admin_users` | bcrypt-hashed credentials for dashboard access. |
 
 Everything with a public URL carries a `draft`/`published` status.
